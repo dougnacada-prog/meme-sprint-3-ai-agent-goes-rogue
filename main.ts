@@ -223,6 +223,9 @@ const png = Buffer.concat([
   chunk("IEND", Buffer.alloc(0)),
 ]);
 
+// Gate guard: image within the competition caps (<=1024x1024, <=1 MiB).
+if (W > 1024 || H > 1024 || png.length > 1048576) throw new Error("entry image exceeds the gate caps");
+
 const out =
   process.env.ENTRY_OUTPUT ??
   (process.env.MAKEFUN_OUTPUT_DIR ? join(process.env.MAKEFUN_OUTPUT_DIR, "entry.png") : "/output/entry.png");
